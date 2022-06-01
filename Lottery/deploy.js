@@ -1,4 +1,5 @@
 const HDWalletProvider = require("truffle-hdwallet-provider");
+const fs = require("fs");
 const Web3 = require("web3");
 const { abi, evm } = require("./compile");
 require("dotenv").config();
@@ -17,7 +18,7 @@ const deploy = async () => {
   const result = await new web3.eth.Contract(abi)
     .deploy({ data: "0x" + evm.bytecode.object })
     .send({ from: accounts[0], gas: "1000000" });
-
+  fs.writeFileSync("lottery-abi.json", JSON.stringify(abi));
   console.log("Contract deployed to", result.options.address);
 };
 
